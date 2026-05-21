@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delivery App | Proyecto Escolar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7f9;
+      --surface:#ffffff;
+      --surface-2:#f0f3f6;
+      --text:#18212b;
+      --muted:#66707a;
+      --primary:#06c167;
+      --primary-hover:#049c53;
+      --danger:#d64545;
+      --warning:#f5a623;
+      --success:#1f9d55;
+      --border:rgba(24,33,43,.10);
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:18px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Instrument Sans', Arial, Helvetica, sans-serif;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      background:linear-gradient(180deg,#f7faf8 0%, #f4f5f7 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    img{
+      display:block;
+      max-width:100%;
+    }
+
+    button{
+      border:none;
+      cursor:pointer;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:rgba(255,255,255,.88);
+      border-bottom:1px solid var(--border);
+    }
+
+    .topbar-inner{
+      width:min(1150px, 92%);
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px 0;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-logo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--primary), #17d980);
+      color:#fff;
+      font-weight:700;
+      box-shadow:var(--shadow);
+    }
+
+    .brand h1{
+      font-size:1.1rem;
+      line-height:1.1;
+    }
+
+    .brand span{
+      display:block;
+      font-size:.85rem;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .cart-btn{
+      background:var(--text);
+      color:#fff;
+      padding:12px 18px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:600;
+      transition:.25s;
+    }
+
+    .cart-btn:hover{
+      transform:translateY(-2px);
+      opacity:.95;
+    }
+
+    .cart-count{
+      min-width:24px;
+      height:24px;
+      border-radius:999px;
+      background:var(--primary);
+      display:grid;
+      place-items:center;
+      font-size:.82rem;
+      padding:0 6px;
+    }
+
+    .hero{
+      width:min(1150px, 92%);
+      margin:32px auto 24px;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      align-items:stretch;
+    }
+
+    .hero-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:34px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-card h2{
+      font-size:clamp(2rem, 4vw, 3.6rem);
+      line-height:1;
+      margin-bottom:14px;
+      max-width:10ch;
+    }
+
+    .hero-card p{
+      color:var(--muted);
+      font-size:1rem;
+      max-width:55ch;
+      margin-bottom:22px;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .badge{
+      background:#eafaf2;
+      color:#0d7f49;
+      border:1px solid rgba(6,193,103,.18);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:.92rem;
+      font-weight:600;
+    }
+
+    .hero-side{
+      overflow:hidden;
+      border-radius:28px;
+      min-height:280px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--border);
+    }
+
+    .hero-side img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .container{
+      width:min(1150px, 92%);
+      margin:0 auto 40px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      margin:10px 0 20px;
+    }
+
+    .section-head h3{
+      font-size:1.6rem;
+    }
+
+    .section-head p{
+      color:var(--muted);
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:var(--surface);
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      transition:.25s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+    }
+
+    .card img{
+      width:100%;
+      height:210px;
+      object-fit:cover;
+    }
+
+    .card-content{
+      padding:18px;
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+
+    .card h4{
+      font-size:1.1rem;
+    }
+
+    .price{
+      color:var(--primary);
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .card p{
+      color:var(--muted);
+      margin-bottom:16px;
+      min-height:48px;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .btn{
+      flex:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      transition:.25s;
+      font-weight:600;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .btn-primary:hover{
+      background:var(--primary-hover);
+    }
+
+    .btn-secondary{
+      background:var(--surface-2);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    .btn-secondary:hover{
+      background:#e9edf1;
+    }
+
+    .cart-panel,
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:100;
+    }
+
+    .cart-panel.active,
+    .modal-overlay.active{
+      display:block;
+    }
+
+    .backdrop{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,.45);
+    }
+
+    .drawer{
+      position:absolute;
+      right:0;
+      top:0;
+      width:min(450px, 100%);
+      height:100%;
+      background:var(--surface);
+      box-shadow:-10px 0 30px rgba(0,0,0,.18);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .drawer-header,
+    .drawer-footer{
+      padding:18px 20px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .drawer-footer{
+      border-bottom:none;
+      border-top:1px solid var(--border);
+      margin-top:auto;
+      background:#fcfcfd;
+    }
+
+    .drawer-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:var(--surface-2);
+      font-size:1.1rem;
+    }
+
+    .cart-items{
+      padding:16px 20px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .cart-item{
+      display:grid;
+      grid-template-columns:78px 1fr auto;
+      gap:12px;
+      align-items:center;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:10px;
+    }
+
+    .cart-item img{
+      width:78px;
+      height:78px;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+    .cart-item h5{
+      margin-bottom:4px;
+      font-size:1rem;
+    }
+
+    .cart-item small{
+      color:var(--muted);
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .qty-controls{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .qty-controls button{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      background:var(--surface-2);
+      border:1px solid var(--border);
+    }
+
+    .remove-btn{
+      background:#fff1f1;
+      color:var(--danger);
+      border:1px solid rgba(214,69,69,.14);
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:.85rem;
+      margin-top:8px;
+    }
+
+    .totals{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .totals div{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+    }
+
+    .totals div.total{
+      color:var(--text);
+      font-size:1.1rem;
+      font-weight:700;
+      border-top:1px dashed var(--border);
+      padding-top:12px;
+      margin-top:4px;
+    }
+
+    .checkout-btn{
+      width:100%;
+      background:var(--primary);
+      color:#fff;
+      padding:14px 16px;
+      border-radius:14px;
+      font-size:1rem;
+      font-weight:700;
+    }
+
+    .checkout-btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      padding:40px 20px;
+    }
+
+    .modal{
+      position:relative;
+      z-index:2;
+      width:min(520px, 92%);
+      margin:5vh auto;
+      background:var(--surface);
+      border-radius:24px;
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+
+    .modal-header,
+    .modal-body{
+      padding:22px;
+    }
+
+    .modal-header{
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+
+    .pay-note{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#fff8e8;
+      color:#8a6415;
+      border:1px solid rgba(245,166,35,.22);
+      font-size:.92rem;
+    }
+
+    .payment-summary{
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      padding:14px;
+      border-radius:16px;
+      margin-bottom:16px;
+    }
+
+    .payment-summary div{
+      display:flex;
+      justify-content:space-between;
+      margin:6px 0;
+      color:var(--muted);
+    }
+
+    .payment-summary .final{
+      color:var(--text);
+      font-weight:700;
+      padding-top:8px;
+      border-top:1px dashed var(--border);
+      margin-top:8px;
+    }
+
+    form{
+      display:grid;
+      gap:14px;
+    }
+
+    .field{
+      display:grid;
+      gap:6px;
+    }
+
+    .field label{
+      font-weight:600;
+      font-size:.95rem;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      padding:13px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#fff;
+      outline:none;
+      transition:.2s;
+      font-size:1rem;
+    }
+
+    .field input:focus,
+    .field select:focus{
+      border-color:rgba(6,193,103,.6);
+      box-shadow:0 0 0 4px rgba(6,193,103,.12);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .fake-card{
+      background:linear-gradient(135deg, #18212b, #2d3946);
+      color:#fff;
+      border-radius:20px;
+      padding:18px;
+      margin-bottom:16px;
+      min-height:180px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .fake-card small{
+      opacity:.75;
+    }
+
+    .fake-card-number{
+      letter-spacing:2px;
+      font-size:1.2rem;
+      margin:18px 0 8px;
+    }
+
+    .pay-actions{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .status{
+      margin-top:14px;
+      padding:14px;
+      border-radius:14px;
+      display:none;
+      font-weight:600;
+    }
+
+    .status.show{
+      display:block;
+    }
+
+    .status.success{
+      background:#eafaf2;
+      color:#157347;
+      border:1px solid rgba(31,157,85,.18);
+    }
+
+    .status.error{
+      background:#fff2f2;
+      color:#b42318;
+      border:1px solid rgba(214,69,69,.16);
+    }
+
+    footer{
+      margin-top:50px;
+      background:#18212b;
+      color:#fff;
+      text-align:center;
+      padding:22px;
+    }
+
+    footer p{
+      color:rgba(255,255,255,.75);
+    }
+
+    @media (max-width: 920px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 600px){
+      .grid-2,
+      .card-actions{
+        grid-template-columns:1fr;
+        display:grid;
+      }
+
+      .hero-card{
+        padding:24px;
+      }
+
+      .modal{
+        margin:2vh auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">D</div>
+        <div>
+          <h1>Delivery App</h1>
+          <span>Proyecto escolar con checkout simulado</span>
+        </div>
+      </div>
+
+      <button class="cart-btn" id="openCartBtn" aria-label="Abrir carrito">
+        Carrito
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <h2>Tu comida favorita, más rápido.</h2>
+      <p>
+        Explora platillos, agrega productos al carrito y completa tu compra con una
+        pasarela de pago falsa totalmente funcional para demostración.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">Pago simulado</span>
+        <span class="badge">Carrito dinámico</span>
+        <span class="badge">Checkout visual</span>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <img
+        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1400&auto=format&fit=crop"
+        alt="Comida a domicilio"
+      />
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="section-head">
+      <div>
+        <h3>Menú disponible</h3>
+        <p>Selecciona tus productos y agrégalos al carrito.</p>
+      </div>
+    </div>
+
+    <div class="cards" id="productList"></div>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <div class="backdrop" id="cartBackdrop"></div>
+    <div class="drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <div>
+            <h3>Tu carrito</h3>
+            <p style="color: var(--muted); margin-top: 4px;">Revisa tu pedido antes de pagar</p>
+          </div>
+          <button class="icon-btn" id="closeCartBtn" aria-label="Cerrar carrito">✕</button>
+        </div>
+      </div>
+
+      <div class="cart-items" id="cartItems">
+        <div class="empty">Tu carrito está vacío.</div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="totals">
+          <div><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+          <div><span>Envío</span><strong id="shipping">$0.00</strong></div>
+          <div><span>Servicio</span><strong id="service">$0.00</strong></div>
+          <div class="total"><span>Total</span><strong id="total">$0.00</strong></div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn" disabled>Ir a pagar</button>
+      </div>
+    </div>
+  </aside>
+
+  <section class="modal-overlay" id="paymentModal" aria-hidden="true">
+    <div class="backdrop" id="paymentBackdrop"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3>Pasarela de pago falsa</h3>
+          <p style="color: var(--muted); margin-top: 4px;">Simulación visual para proyecto escolar</p>
+        </div>
+        <button class="icon-btn" id="closePaymentBtn" aria-label="Cerrar pago">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="fake-card">
+          <div>
+            <small>Tarjeta demostrativa</small>
+            <div class="fake-card-number" id="cardPreviewNumber">•••• •••• •••• ••••</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:12px;">
+            <div>
+              <small>Titular</small>
+              <div id="cardPreviewName">NOMBRE DEL CLIENTE</div>
+            </div>
+            <div>
+              <small>Vence</small>
+              <div id="cardPreviewExpiry">MM/AA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-summary">
+          <div><span>Productos</span><strong id="summaryItems">0</strong></div>
+          <div><span>Subtotal</span><strong id="summarySubtotal">$0.00</strong></div>
+          <div><span>Envío + servicio</span><strong id="summaryExtra">$0.00</strong></div>
+          <div class="final"><span>Total a pagar</span><strong id="summaryTotal">$0.00</strong></div>
+        </div>
+
+        <div class="pay-note">
+          Esta pasarela es ficticia y solo simula un cobro exitoso o fallido en el frontend.
+        </div>
+
+        <form id="paymentForm">
+          <div class="field">
+            <label for="customerName">Nombre del titular</label>
+            <input type="text" id="customerName" placeholder="Ej. Adrian Garcia" required />
+          </div>
+
+          <div class="field">
+            <label for="cardNumber">Número de tarjeta</label>
+            <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="expiry">Vencimiento</label>
+              <input type="text" id="expiry" placeholder="MM/AA" maxlength="5" required />
+            </div>
+
+            <div class="field">
+              <label for="cvv">CVV</label>
+              <input type="password" id="cvv" placeholder="123" maxlength="4" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="paymentMethod">Método</label>
+            <select id="paymentMethod">
+              <option value="card">Tarjeta</option>
+              <option value="cash">Pago contra entrega</option>
+            </select>
+          </div>
+
+          <div class="pay-actions">
+            <button type="button" class="btn btn-secondary" id="simulateFailBtn">Simular fallo</button>
+            <button type="submit" class="btn btn-primary">Pagar ahora</button>
+          </div>
+        </form>
+
+        <div class="status" id="paymentStatus"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Delivery App - Proyecto Escolar con checkout simulado</p>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Pizza Italiana",
+        description: "Deliciosa pizza con ingredientes frescos y masa artesanal.",
+        price: 189,
+        image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1200&auto=format&fit=crop"
+      },
+      {
+        id: 2,
+        name: "Hamburguesa Gourmet",
+        description: "Carne jugosa, queso cheddar y papas fritas crujientes.",
+        price: 165,
+        image: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"
+      },
+      {
+        id: 3,
+        name: "Ensalada Fresh",
+        description: "Opción ligera con vegetales frescos y aderezo especial.",
+        price: 140,
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop"
+      },
+      {
+        id: 4,
+        name: "Tacos de Asada",
+        description: "Orden de tacos con salsa, cebolla, cilantro y limón.",
+        price: 135,
+        image: "https://images.unsplash.com/photo-1613514785940-daed07799d9b?q=80&w=1200&auto=format&fit=crop"
+      },
+      {
+        id: 5,
+        name: "Sushi Mix",
+        description: "Rollos surtidos con soya, jengibre y toque premium.",
+        price: 220,
+        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=1200&auto=format&fit=crop"
+      },
+      {
+        id: 6,
+        name: "Postre Especial",
+        description: "Un postre dulce para cerrar tu pedido con broche de oro.",
+        price: 95,
+        image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=1200&auto=format&fit=crop"
+      }
+    ];
+
+    let cart = [];
+
+    const productList = document.getElementById("productList");
+    const cartPanel = document.getElementById("cartPanel");
+    const paymentModal = document.getElementById("paymentModal");
+    const cartItems = document.getElementById("cartItems");
+    const cartCount = document.getElementById("cartCount");
+    const subtotalEl = document.getElementById("subtotal");
+    const shippingEl = document.getElementById("shipping");
+    const serviceEl = document.getElementById("service");
+    const totalEl = document.getElementById("total");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const paymentStatus = document.getElementById("paymentStatus");
+
+    function money(value){
+      return `$${value.toFixed(2)}`;
+    }
+
+    function renderProducts(){
+      productList.innerHTML = products.map(product => `
+        <article class="card">
+          <img src="${product.image}" alt="${product.name}">
+          <div class="card-content">
+            <div class="card-top">
+              <h4>${product.name}</h4>
+              <span class="price">${money(product.price)}</span>
+            </div>
+            <p>${product.description}</p>
+            <div class="card-actions">
+              <button class="btn btn-secondary" onclick="quickView('${product.name}', ${product.price})">Ver</button>
+              <button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function quickView(name, price){
+      alert(`${name}\nPrecio: ${money(price)}\n\nListo para agregarse al carrito.`);
+    }
+
+    function addToCart(id){
+      const item = cart.find(p => p.id === id);
+      if(item){
+        item.quantity++;
+      } else {
+        const product = products.find(p => p.id === id);
+        cart.push({...product, quantity:1});
+      }
+      renderCart();
+      openCart();
+    }
+
+    function changeQty(id, delta){
+      const item = cart.find(p => p.id === id);
+      if(!item) return;
+      item.quantity += delta;
+      if(item.quantity <= 0){
+        cart = cart.filter(p => p.id !== id);
+      }
+      renderCart();
+    }
+
+    function removeItem(id){
+      cart = cart.filter(p => p.id !== id);
+      renderCart();
+    }
+
+    function calculateTotals(){
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const shipping = subtotal > 0 ? 39 : 0;
+      const service = subtotal > 0 ? subtotal * 0.08 : 0;
+      const total = subtotal + shipping + service;
+      const items = cart.reduce((acc, item) => acc + item.quantity, 0);
+      return { subtotal, shipping, service, total, items };
+    }
+
+    function renderCart(){
+      const { subtotal, shipping, service, total, items } = calculateTotals();
+
+      cartCount.textContent = items;
+      subtotalEl.textContent = money(subtotal);
+      shippingEl.textContent = money(shipping);
+      serviceEl.textContent = money(service);
+      totalEl.textContent = money(total);
+      checkoutBtn.disabled = cart.length === 0;
+
+      if(cart.length === 0){
+        cartItems.innerHTML = `<div class="empty">Tu carrito está vacío.</div>`;
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div>
+              <h5>${item.name}</h5>
+              <small>${money(item.price)} c/u</small>
+              <div class="qty-controls">
+                <button onclick="changeQty(${item.id}, -1)">−</button>
+                <strong>${item.quantity}</strong>
+                <button onclick="changeQty(${item.id}, 1)">+</button>
+              </div>
+              <button class="remove-btn" onclick="removeItem(${item.id})">Eliminar</button>
+            </div>
+            <strong>${money(item.price * item.quantity)}</strong>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("summaryItems").textContent = items;
+      document.getElementById("summarySubtotal").textContent = money(subtotal);
+      document.getElementById("summaryExtra").textContent = money(shipping + service);
+      document.getElementById("summaryTotal").textContent = money(total);
+    }
+
+    function openCart(){
+      cartPanel.classList.add("active");
+      cartPanel.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCart(){
+      cartPanel.classList.remove("active");
+      cartPanel.setAttribute("aria-hidden", "true");
+    }
+
+    function openPayment(){
+      if(cart.length === 0) return;
+      paymentModal.classList.add("active");
+      paymentModal.setAttribute("aria-hidden", "false");
+      paymentStatus.className = "status";
+      paymentStatus.textContent = "";
+    }
+
+    function closePayment(){
+      paymentModal.classList.remove("active");
+      paymentModal.setAttribute("aria-hidden", "true");
+    }
+
+    function formatCardNumber(value){
+      return value.replace(/\D/g, "").slice(0,16).replace(/(.{4})/g, "$1 ").trim();
+    }
+
+    function formatExpiry(value){
+      value = value.replace(/\D/g, "").slice(0,4);
+      if(value.length >= 3){
+        return value.slice(0,2) + "/" + value.slice(2);
+      }
+      return value;
+    }
+
+    function isValidCard(number){
+      const clean = number.replace(/\s/g, "");
+      return /^\d{16}$/.test(clean);
+    }
+
+    function isValidExpiry(expiry){
+      if(!/^\d{2}\/\d{2}$/.test(expiry)) return false;
+      const [mm, yy] = expiry.split("/").map(Number);
+      return mm >= 1 && mm <= 12 && yy >= 0;
+    }
+
+    function isValidCVV(cvv){
+      return /^\d{3,4}$/.test(cvv);
+    }
+
+    function simulatePayment(success = true){
+      const name = document.getElementById("customerName").value.trim();
+      const cardNumber = document.getElementById("cardNumber").value.trim();
+      const expiry = document.getElementById("expiry").value.trim();
+      const cvv = document.getElementById("cvv").value.trim();
+      const method = document.getElementById("paymentMethod").value;
+
+      if(method === "card"){
+        if(!name || !isValidCard(cardNumber) || !isValidExpiry(expiry) || !isValidCVV(cvv)){
+          paymentStatus.className = "status error show";
+          paymentStatus.textContent = "Completa correctamente los datos de la tarjeta.";
+          return;
+        }
+      }
+
+      paymentStatus.className = "status show";
+      paymentStatus.textContent = "Procesando pago...";
+
+      setTimeout(() => {
+        if(success){
+          const orderId = "ORD-" + Math.floor(Math.random() * 900000 + 100000);
+          paymentStatus.className = "status success show";
+          paymentStatus.innerHTML = `Pago aprobado correctamente. Folio de demostración: <strong>${orderId}</strong>.`;
+          cart = [];
+          renderCart();
+          document.getElementById("paymentForm").reset();
+          document.getElementById("cardPreviewNumber").textContent = "•••• •••• •••• ••••";
+          document.getElementById("cardPreviewName").textContent = "NOMBRE DEL CLIENTE";
+          document.getElementById("cardPreviewExpiry").textContent = "MM/AA";
+          setTimeout(() => {
+            closePayment();
+            closeCart();
+          }, 1800);
+        } else {
+          paymentStatus.className = "status error show";
+          paymentStatus.textContent = "Pago rechazado en la simulación. Intenta nuevamente.";
+        }
+      }, 1500);
+    }
+
+    document.getElementById("openCartBtn").addEventListener("click", openCart);
+    document.getElementById("closeCartBtn").addEventListener("click", closeCart);
+    document.getElementById("cartBackdrop").addEventListener("click", closeCart);
+
+    document.getElementById("checkoutBtn").addEventListener("click", () => {
+      openPayment();
+    });
+
+    document.getElementById("closePaymentBtn").addEventListener("click", closePayment);
+    document.getElementById("paymentBackdrop").addEventListener("click", closePayment);
+
+    document.getElementById("cardNumber").addEventListener("input", e => {
+      e.target.value = formatCardNumber(e.target.value);
+      document.getElementById("cardPreviewNumber").textContent = e.target.value || "•••• •••• •••• ••••";
+    });
+
+    document.getElementById("expiry").addEventListener("input", e => {
+      e.target.value = formatExpiry(e.target.value);
+      document.getElementById("cardPreviewExpiry").textContent = e.target.value || "MM/AA";
+    });
+
+    document.getElementById("customerName").addEventListener("input", e => {
+      document.getElementById("cardPreviewName").textContent = e.target.value.toUpperCase() || "NOMBRE DEL CLIENTE";
+    });
+
+    document.getElementById("paymentForm").addEventListener("submit", e => {
+      e.preventDefault();
+      simulatePayment(true);
+    });
+
+    document.getElementById("simulateFailBtn").addEventListener("click", () => {
+      simulatePayment(false);
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
